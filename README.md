@@ -16,8 +16,4 @@ Autofac:		  5Autofac:		  10.0.0
 Dapper: 		  1.50.2
 EntityFrameworkCore:  3.1.5
 Newtonsoft.Json:  12.0.3
-NLog:			  3.2.1
-
-
  
-"# GovLookupWebapi" 
