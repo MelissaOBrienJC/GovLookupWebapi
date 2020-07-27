@@ -14,7 +14,7 @@ Web Api to retrieve data for U.S. Legislators, Cabinet and Judiciary.
  ```
  Autofac				: 5.0.0 
  AutoMapper				: 10.0.0
- Dapper					: 1.50.2
+ Dapper		: 1.50.2
  Entity Framework Core	: 3.1.5
  Newtonsoft.Json		: 12.0.3
  ```
