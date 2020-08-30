@@ -23,7 +23,7 @@ namespace GovLookupWebapi
 {
     public class Startup
     {
-
+        const string GovLookupPolicyName = "GovLookupPolicy";
         public IConfiguration Configuration { get; }
 
         public Startup(IWebHostEnvironment env)
@@ -41,6 +41,11 @@ namespace GovLookupWebapi
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors(o => o.AddPolicy(GovLookupPolicyName, builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }));
+
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers(setupAction =>
             {
@@ -51,13 +56,9 @@ namespace GovLookupWebapi
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "GovLookup WebApi", Version = "v1" });
-
-                // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-                ;
-               
+                c.IncludeXmlComments(xmlPath);    
             });
             
 
@@ -81,6 +82,8 @@ namespace GovLookupWebapi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(GovLookupPolicyName);
 
             app.UseAuthorization();
 

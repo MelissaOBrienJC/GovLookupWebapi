@@ -25,9 +25,9 @@ namespace GovLookupWebapi.Models
         public string FacebookAccount { get; set; }
         public string YoutubeAccount { get; set; }
         public string VoteSmartId { get; set; }
+        public VoteStatDto VoteStat { get; set; }
         public IEnumerable<RatingDto> Ratings { get; set; }
         public IEnumerable<KeyVoteDto> KeyVotes { get; set; }
-
         public IEnumerable<BillDto> Bills { get; set; }
         public IEnumerable<CommiteeDto> Committees { get; set; }
 

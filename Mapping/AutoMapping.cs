@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GovLookup.Models;
 using GovLookupWebapi.Models;
+using RefreshData.DataModel;
 
 namespace GovLookupWebapi.Mapping
 {
@@ -11,7 +12,11 @@ namespace GovLookupWebapi.Mapping
 
             #region legislators
             CreateMap<Legislator, LegislatorSummaryDto>();
-            CreateMap<Legislator, LegislatorDetailDto>();
+            CreateMap<Legislator, LegislatorDetailDto>()
+                 .ForMember(m => m.VoteStat, o => o.MapFrom(m => new VoteStatDto() { 
+                        MissedVotesPct = m.MissedVotesPct, 
+                        VotesWithPartyPct = m.VotesWithPartyPct
+                    }));
             CreateMap<Rating, RatingDto>();
             CreateMap<RollCallDecision, RollCallDecisionDto>();
             CreateMap<Bill, BillDto>();
@@ -20,8 +25,8 @@ namespace GovLookupWebapi.Mapping
             CreateMap<KeyVote, KeyVoteDto>();
             #endregion
 
-        #region cabinet
-        CreateMap<Cabinet, CabinetSummaryDto>();
+            #region cabinet
+            CreateMap<Cabinet, CabinetSummaryDto>();
             CreateMap<Cabinet, CabinetDetailDto>();
             CreateMap<School, SchoolDto>();
             CreateMap<JobPosition, JobPositionDto>();
@@ -33,7 +38,11 @@ namespace GovLookupWebapi.Mapping
             CreateMap<KeyDecisions, KeyDecisionsDto>();
             CreateMap<KeyDecisionsOpinions, KeyDecisionsOpinionsDto>();
             #endregion
-            ;
+
+            #region bills
+            CreateMap<CurrentBills, CurrentBillsDto>()
+                   .ForMember(dest => dest.TimePeriod, opt => opt.MapFrom(src => src.time_period));
+            #endregion
         }
     }
 }

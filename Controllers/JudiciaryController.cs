@@ -2,6 +2,7 @@
 using GovLookup.DataModel;
 using GovLookup.Models;
 using GovLookupWebapi.Filters;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -27,6 +28,7 @@ namespace GovLookupWebApi.Controllers
         /// </summary>
 
         [HttpGet()]
+        [EnableCors("GovLookupPolicy")]
         public IActionResult GetJudiciary()
         {
 
@@ -39,6 +41,7 @@ namespace GovLookupWebApi.Controllers
         /// <param name="judiciaryId">Id of supreme court jsutice. Example enter 2 for John Roberts</param>
 
         [HttpGet("{judiciaryId}")]
+        [EnableCors("GovLookupPolicy")]
         public IActionResult GetJudiciary(string judiciaryId)
         {
             var judiciary = this.judiciaryService.GetJudiciaryById(judiciaryId);

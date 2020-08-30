@@ -20,7 +20,5 @@ namespace GovLookupWebapi.Models
         public string VoteNumber { get; set; }
         public string IssueNo { get; set; }
 
-
-
     }
 }

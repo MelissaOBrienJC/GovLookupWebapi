@@ -2,6 +2,7 @@
 using GovLookup.DataModel;
 using GovLookup.Models;
 using GovLookupWebapi.Filters;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -13,6 +14,7 @@ namespace GovLookupWebApi.Controllers
     public class LegislatorsController :  ControllerBase
     {
         private readonly ILegislatorsService legislatorsService;
+
 
       
         public LegislatorsController(ILegislatorsService legislatorsService)
@@ -28,9 +30,9 @@ namespace GovLookupWebApi.Controllers
         /// <param name="searchValue">search value can be a name, partial name or an address examples: Bernie Sanders, Mitch  or 1060 W Addison St, Chicago, IL 60613</param>
 
         [HttpGet()]
+        [EnableCors("GovLookupPolicy")]
         public IActionResult GetLegislators([FromQuery] string searchValue)
         {
-
             return Ok(this.legislatorsService.GetLegislators(searchValue));
             
         }
@@ -42,6 +44,7 @@ namespace GovLookupWebApi.Controllers
         /// <param name="legislatorId">Id of a specific legisltor. Example enter W000817 for Elizabeth Warren</param>
 
         [HttpGet("{legislatorId}")]
+        [EnableCors("GovLookupPolicy")]
 
         public IActionResult GetLegislator(string legislatorId)
         {

@@ -8,6 +8,7 @@ using GovLookup.DataAccess.RepositoryContract;
 using GovLookup.Models;
 using GovLookup.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using RefreshData.DataModel;
 
 namespace GovLookup.DataAccess.Repository
 {
@@ -87,7 +88,7 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<IndustryFinance>("usp_GetLegislatorIndustryFinanceNew", inputParameters, CommandType.StoredProcedure);
+            var results = GovLookupDbContext.SqlQuery<IndustryFinance>("usp_GetLegislatorIndustryFinance", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
@@ -112,7 +113,7 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<KeyVote>("usp_GetLegislatorKeyVotesNew", inputParameters, CommandType.StoredProcedure);
+            var results = GovLookupDbContext.SqlQuery<KeyVote>("usp_GetLegislatorKeyVotes", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
@@ -123,7 +124,7 @@ namespace GovLookup.DataAccess.Repository
                     { "@Id", id}
              };
 
-            var results = GovLookupDbContext.SqlQuery<Bill>("usp_GetLegislatorBillsNew", inputParameters, CommandType.StoredProcedure);
+            var results = GovLookupDbContext.SqlQuery<Bill>("usp_GetLegislatorBills", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
@@ -176,7 +177,7 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<School>("usp_GetCabinetEducationNew", inputParameters, CommandType.StoredProcedure);
+            var results = GovLookupDbContext.SqlQuery<School>("usp_GetCabinetEducation", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
@@ -229,7 +230,7 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<KeyDecisions>("usp_GetJudiciaryKeyDecisionsNew", inputParameters, CommandType.StoredProcedure);
+            var results = GovLookupDbContext.SqlQuery<KeyDecisions>("usp_GetJudiciaryKeyDecisions", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
@@ -255,7 +256,18 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<RollCallDecision>("usp_GetJudiciaryRollCallDecisionNew", inputParameters, CommandType.StoredProcedure);
+            var results = GovLookupDbContext.SqlQuery<RollCallDecision>("usp_GetJudiciaryRollCallDecision", inputParameters, CommandType.StoredProcedure);
+
+            return results.ToList();
+        }
+
+        #endregion
+
+        #region bills
+
+        public List<CurrentBills> GetCurrentBills()
+        {
+            var results = GovLookupDbContext.SqlQuery<CurrentBills>("usp_GetCurrentBills", null, CommandType.StoredProcedure);
 
             return results.ToList();
         }

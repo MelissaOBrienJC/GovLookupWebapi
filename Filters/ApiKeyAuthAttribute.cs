@@ -35,12 +35,16 @@ namespace GovLookupWebapi.Filters
                 else
                 {
                     var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-                    var govLookupApiKey = config.GetValue<string>("ApiKey");
-                    if (!govLookupApiKey.Equals(apiKey.ToString()))
+                    List<string> govLookupApiKeys = config.GetSection("ApiKeys").Get<List<string>>();
+
+                    foreach (string govLookupApiKey in govLookupApiKeys)
                     {
-                        context.Result = new UnauthorizedResult();
-                        return;
-                    }
+                        if (!govLookupApiKey.Equals(apiKey.ToString()))
+                        {
+                            context.Result = new UnauthorizedResult();
+                            return;
+                        }
+                    }   
                 }
             }
             await next();
@@ -50,19 +54,21 @@ namespace GovLookupWebapi.Filters
         private Boolean RequireApiKey(ActionExecutingContext context)
         {
             string refererUrl = "";
-
+           
             var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            var urlKeyException = config.GetValue<string>("UrlKeyException");
-
+            List<string> urlExceptions = config.GetSection("UrlKeyException").Get<List<string>>();
             if (context.HttpContext.Request.Headers.TryGetValue("Referer", out var refererHeders))
             {
                 refererUrl = refererHeders.FirstOrDefault().ToString();
             }
-
-            if (refererUrl.Contains(urlKeyException))
+            foreach (string urlException in urlExceptions)
             {
-                return false;
+                if (refererUrl.Contains(urlException))
+                {
+                    return false;
+                }
             }
+
             return true;
 
 

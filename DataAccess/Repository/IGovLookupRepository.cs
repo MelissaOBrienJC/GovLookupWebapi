@@ -1,5 +1,6 @@
 ﻿using GovLookup.Models;
 using GovLookup.Models.ViewModels;
+using RefreshData.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,10 @@ namespace GovLookup.DataAccess.RepositoryContract
         List<KeyDecisions> GetJudiciaryKeyDecisions(string id);
         List<KeyDecisionsOpinions> GetJudiciaryKeyDecisionsOpinions(string id);
         List<RollCallDecision> GetJudiciaryRollCallDecision(string docket);
+        #endregion
+
+        #region bills
+        public List<CurrentBills> GetCurrentBills();
         #endregion
     }
 }

@@ -25,6 +25,7 @@ namespace GovLookup.DependencyInjection
             builder.Register<ILegislatorsService>(c => new LegislatorsService()).PropertiesAutowired().InstancePerLifetimeScope();
             builder.Register<ICabinetService>(c => new CabinetService()).PropertiesAutowired().InstancePerLifetimeScope();
             builder.Register<IJudiciaryService>(c => new JudiciaryService()).PropertiesAutowired().InstancePerLifetimeScope();
+            builder.Register<IBillsService>(c => new BillsService()).PropertiesAutowired().InstancePerLifetimeScope();
 
         }
     }

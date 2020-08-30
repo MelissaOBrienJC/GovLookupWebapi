@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using GovLookup.DataModel;
-
+using GovLookupWebapi.Models;
 
 namespace GovLookup.Models
 {
@@ -23,7 +23,6 @@ namespace GovLookup.Models
         public string StateName { get; set; }
         public string District { get; set; }
         public string AtLarge { get; set; }
-        
         public string MissedVotesPct { get; set; }
         public string VotesWithPartyPct { get; set; }
         public string Map { get; set; }

@@ -2,6 +2,7 @@
 using GovLookup.DataModel;
 using GovLookup.Models;
 using GovLookupWebapi.Filters;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -26,6 +27,7 @@ namespace GovLookupWebApi.Controllers
         /// </summary>
      
         [HttpGet()]
+        [EnableCors("GovLookupPolicy")]
         public IActionResult GetCabinet()
         {
 
@@ -39,6 +41,7 @@ namespace GovLookupWebApi.Controllers
         /// <param name="cabinetId">Id of cabinet number.Example enter 6 for Secretary of the Treasury</param>
 
         [HttpGet("{cabinetId}")]
+        [EnableCors("GovLookupPolicy")]
         public IActionResult GetCabinet(string cabinetId)
         {
             var cabinet = this.cabinetService.GetCabinetById(cabinetId);

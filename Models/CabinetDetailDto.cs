@@ -27,8 +27,7 @@ namespace GovLookupWebapi.Models
 
         public string AssumedOffice { get; set; }       
         public string FormerPosition { get; set; }
-        public string Summary { get; set; }
-    
+            
         public string BirthLocation { get; set; }
         public string TwitterFeed { get; set; }
         
