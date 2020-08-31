@@ -6,7 +6,7 @@ Web Api to retrieve data for U.S. Legislators, Cabinet and Judiciary.
 ## Demo
 <a href="https://govlookupwebapi.mobdemo.org/swagger/index.html" rel="nofollow">Try out the demo!</a>
 <p align="center">    
-    <img src="http://www.govlookup.mobdemo.org//images//govlookup_webapi_1.jpg" />   
+    <img src="http://www.govlookup.mobdemo.org//images//screencapture-govlookupwebapi-mobdemo-org.png" />   
  </p>
 
 
