@@ -5,6 +5,7 @@ using GovLookupWebapi.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace GovLookupWebApi.Controllers
 {
@@ -28,10 +29,15 @@ namespace GovLookupWebApi.Controllers
      
         [HttpGet()]
         [EnableCors("GovLookupPolicy")]
-        public IActionResult GetCurrentBills()
+        public async Task<IActionResult> GetCurrentBills()
         {
+            var response = await this.BillsService.GetCurrentBills();
 
-            return Ok(this.BillsService.GetCurrentBills());
+            if (response != null)
+                return Ok(response);
+            else
+                return NotFound("Unable to find any current bills");
+                            
             
         }
 

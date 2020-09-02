@@ -5,6 +5,7 @@ using GovLookupWebapi.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace GovLookupWebApi.Controllers
 {
@@ -31,9 +32,9 @@ namespace GovLookupWebApi.Controllers
 
         [HttpGet()]
         [EnableCors("GovLookupPolicy")]
-        public IActionResult GetLegislators([FromQuery] string searchValue)
+        public async Task<IActionResult> GetLegislators([FromQuery] string searchValue)
         {
-            return Ok(this.legislatorsService.GetLegislators(searchValue));
+            return Ok(await this.legislatorsService.GetLegislators(searchValue));
             
         }
 
@@ -46,9 +47,9 @@ namespace GovLookupWebApi.Controllers
         [HttpGet("{legislatorId}")]
         [EnableCors("GovLookupPolicy")]
 
-        public IActionResult GetLegislator(string legislatorId)
+        public async Task<IActionResult> GetLegislator(string legislatorId)
         {
-            var legislator = this.legislatorsService.GetLegislatorById(legislatorId);
+            var legislator = await this.legislatorsService.GetLegislatorById(legislatorId);
 
             if (legislator == null)
             {

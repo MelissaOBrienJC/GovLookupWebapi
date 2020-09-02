@@ -4,6 +4,7 @@ using GovLookup.DataAccess.RepositoryContract;
 using System.Collections.Generic;
 using GovLookupWebapi.Models;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace GovLookup.Business.Implementation
 {
@@ -13,27 +14,28 @@ namespace GovLookup.Business.Implementation
         public IGovLookupRepository GovLookupRepository { get; set; }
         public IMapper mapper { get; set; }
 
-        public IEnumerable<CabinetSummaryDto> GetCabinet()
+        public async Task<IEnumerable<CabinetSummaryDto>> GetCabinet()
         {
 
             List<Cabinet> cabinetsFromDb;
-            cabinetsFromDb = GovLookupRepository.GetAllCabinet();
+            cabinetsFromDb = await GovLookupRepository.GetAllCabinet();
             return mapper.Map<IEnumerable<CabinetSummaryDto>>(cabinetsFromDb);
 
         }
-        public CabinetDetailDto GetCabinetById(string id)
+        public async Task<CabinetDetailDto> GetCabinetById(string id)
         {
-            var cabinetFromDb = GovLookupRepository.GetCabinetById(id);
-            AddCabinetData(cabinetFromDb);
+            var cabinetFromDb = await GovLookupRepository.GetCabinetById(id);
+            cabinetFromDb =  await AddCabinetData(cabinetFromDb);
             return mapper.Map<CabinetDetailDto>(cabinetFromDb);
         }
 
-        private void AddCabinetData(Cabinet cabinet)
+        private async Task<Cabinet> AddCabinetData(Cabinet cabinet)
         {
-            if (cabinet == null) return;
+            if (cabinet == null) return cabinet;
                         
-            cabinet.Education = GovLookupRepository.GetCabinetEducation(cabinet.Id);
-            cabinet.JobHistory = GovLookupRepository.GetCabinetJobHistory(cabinet.Id);
+            cabinet.Education = await GovLookupRepository.GetCabinetEducation(cabinet.Id);
+            cabinet.JobHistory = await GovLookupRepository.GetCabinetJobHistory(cabinet.Id);
+            return cabinet;
 
         }
       

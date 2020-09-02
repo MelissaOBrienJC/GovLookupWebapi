@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper.Configuration;
 using GovLookup.DataAccess.RepositoryContract;
 using GovLookup.Models;
@@ -22,15 +23,15 @@ namespace GovLookup.DataAccess.Repository
         }
         
         #region legislators
-        public List<Legislator> GetAllLegislators()
+        public async Task<List<Legislator>> GetAllLegislators()
         {
 
-            var results = GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorsAll", null, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorsAll", null, CommandType.StoredProcedure);
 
             return results.ToList();
         }
 
-        public Legislator GetLegislatorById(string id)
+        public async Task<Legislator> GetLegislatorById(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -38,11 +39,11 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var result = GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorById", inputParameters, CommandType.StoredProcedure);
+            var result = await GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorById", inputParameters, CommandType.StoredProcedure);
 
             return result.FirstOrDefault();
         }
-        public List<Legislator> GetLegislatorsByName(string name)
+        public async Task<List<Legislator>> GetLegislatorsByName(string name)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -50,11 +51,11 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorsByName", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorsByName", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
-        public List<Legislator> GetLegislatorsByZipcode(string zipcode)
+        public async Task<List<Legislator>> GetLegislatorsByZipcode(string zipcode)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -62,11 +63,11 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorsByZipcode", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorsByZipcode", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
-        public List<Legislator> GetLegislatorsByLngLat(string lng, string lat)
+        public async Task<List<Legislator>> GetLegislatorsByLngLat(string lng, string lat)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -75,12 +76,12 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorsByLngLat", inputParameters, CommandType.StoredProcedure);
+            var results = await  GovLookupDbContext.SqlQuery<Legislator>("usp_GetLegislatorsByLngLat", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
 
-        public List<IndustryFinance> GetLegislatorIndustryFinance(string id)
+        public async Task<List<IndustryFinance>> GetLegislatorIndustryFinance(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -88,12 +89,12 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<IndustryFinance>("usp_GetLegislatorIndustryFinance", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<IndustryFinance>("usp_GetLegislatorIndustryFinance", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
 
-        public List<Rating> GetLegislatorRatings(string id)
+        public async Task<List<Rating>> GetLegislatorRatings(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -101,11 +102,11 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<Rating>("usp_GetLegislatorRatings", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<Rating>("usp_GetLegislatorRatings", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
-        public List<KeyVote> GetLegislatorKeyVotes(string id)
+        public async Task<List<KeyVote>> GetLegislatorKeyVotes(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -113,30 +114,31 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<KeyVote>("usp_GetLegislatorKeyVotes", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<KeyVote>("usp_GetLegislatorKeyVotes", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
-        public List<Bill> GetLegislatorBills(string id)
+
+        public async Task<List<Bill>> GetLegislatorBills(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
                     { "@Id", id}
              };
 
-            var results = GovLookupDbContext.SqlQuery<Bill>("usp_GetLegislatorBills", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<Bill>("usp_GetLegislatorBills", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
 
-        public List<Committee> GetLegislatorCommittees(string id)
+        public async Task<List<Committee>> GetLegislatorCommittees(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
                     { "@Id", id}
              };
 
-            var results = GovLookupDbContext.SqlQuery<Committee>("usp_GetLegislatorCommittees", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<Committee>("usp_GetLegislatorCommittees", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
@@ -145,16 +147,16 @@ namespace GovLookup.DataAccess.Repository
 
         #region cabinet
 
-        public List<Cabinet> GetAllCabinet()
+        public async Task<List<Cabinet>> GetAllCabinet()
         {
 
-            var results = GovLookupDbContext.SqlQuery<Cabinet>("usp_GetCabinetAll", null, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<Cabinet>("usp_GetCabinetAll", null, CommandType.StoredProcedure);
 
             return results.ToList();
         }
 
 
-        public Cabinet GetCabinetById(string id)
+        public async Task<Cabinet> GetCabinetById(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -162,27 +164,27 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var result = GovLookupDbContext.SqlQuery<Cabinet>("usp_GetCabinetById", inputParameters, CommandType.StoredProcedure);
+            var result = await GovLookupDbContext.SqlQuery<Cabinet>("usp_GetCabinetById", inputParameters, CommandType.StoredProcedure);
 
             return result.FirstOrDefault();
         }
 
        
 
-         public List<School> GetCabinetEducation(string id)
+         public async Task<List<School>> GetCabinetEducation(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
                 { "@Id", id }
 
-            };
+            }; 
 
-            var results = GovLookupDbContext.SqlQuery<School>("usp_GetCabinetEducation", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<School>("usp_GetCabinetEducation", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
 
-        public List<JobPosition> GetCabinetJobHistory(string id)
+        public async Task<List<JobPosition>> GetCabinetJobHistory(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -190,7 +192,7 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<JobPosition>("usp_GetCabinetJobHistory", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<JobPosition>("usp_GetCabinetJobHistory", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
@@ -199,22 +201,22 @@ namespace GovLookup.DataAccess.Repository
 
         #region judiciary
 
-        public List<Judiciary> GetAllJudiciary()
+        public async Task<List<Judiciary>> GetAllJudiciary()
         {
 
-            var results = GovLookupDbContext.SqlQuery<Judiciary>("usp_GetJudiciaryAll", null, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<Judiciary>("usp_GetJudiciaryAll", null, CommandType.StoredProcedure);
 
             return results.ToList();
         }
       
-        public Judiciary GetJudiciaryById(string id)
+        public async Task<Judiciary> GetJudiciaryById(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
                 { "@Id", id }
             };
 
-            var result = GovLookupDbContext.SqlQuery<Judiciary>("usp_GetJudiciaryById", inputParameters, CommandType.StoredProcedure);
+            var result = await GovLookupDbContext.SqlQuery<Judiciary>("usp_GetJudiciaryById", inputParameters, CommandType.StoredProcedure);
 
             return result.FirstOrDefault();
         }
@@ -222,7 +224,7 @@ namespace GovLookup.DataAccess.Repository
     
 
        
-        public List<KeyDecisions>GetJudiciaryKeyDecisions(string id)
+        public async Task<List<KeyDecisions>>GetJudiciaryKeyDecisions(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -230,11 +232,11 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<KeyDecisions>("usp_GetJudiciaryKeyDecisions", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<KeyDecisions>("usp_GetJudiciaryKeyDecisions", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
-        public List<KeyDecisionsOpinions> GetJudiciaryKeyDecisionsOpinions(string id)
+        public async Task<List<KeyDecisionsOpinions>> GetJudiciaryKeyDecisionsOpinions(string id)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -242,13 +244,13 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<KeyDecisionsOpinions>("usp_GetJudiciaryKeyDecisionsOpinions", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<KeyDecisionsOpinions>("usp_GetJudiciaryKeyDecisionsOpinions", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
 
        
-        public List<RollCallDecision> GetJudiciaryRollCallDecision(string docket)
+        public async Task<List<RollCallDecision>> GetJudiciaryRollCallDecision(string docket)
         {
             var inputParameters = new Dictionary<string, object>
             {
@@ -256,7 +258,7 @@ namespace GovLookup.DataAccess.Repository
 
             };
 
-            var results = GovLookupDbContext.SqlQuery<RollCallDecision>("usp_GetJudiciaryRollCallDecision", inputParameters, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<RollCallDecision>("usp_GetJudiciaryRollCallDecision", inputParameters, CommandType.StoredProcedure);
 
             return results.ToList();
         }
@@ -265,9 +267,9 @@ namespace GovLookup.DataAccess.Repository
 
         #region bills
 
-        public List<CurrentBills> GetCurrentBills()
+        public async Task<List<CurrentBills>> GetCurrentBills()
         {
-            var results = GovLookupDbContext.SqlQuery<CurrentBills>("usp_GetCurrentBills", null, CommandType.StoredProcedure);
+            var results = await GovLookupDbContext.SqlQuery<CurrentBills>("usp_GetCurrentBills", null, CommandType.StoredProcedure);
 
             return results.ToList();
         }

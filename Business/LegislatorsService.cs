@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using GovLookupWebapi.Models;
 using AutoMapper;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace GovLookup.Business.Implementation
 {
@@ -21,41 +22,41 @@ namespace GovLookup.Business.Implementation
         private string _geocodeUrl = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress";
 
         #region legislatorFind
-        public IEnumerable<LegislatorSummaryDto> GetLegislators(string searchValue)
+        public async Task<IEnumerable<LegislatorSummaryDto>> GetLegislators(string searchValue)
         {
 
             List<Legislator> legislatorsFromDb;
 
             if (string.IsNullOrWhiteSpace(searchValue))
             {
-                legislatorsFromDb = GovLookupRepository.GetAllLegislators();
+                legislatorsFromDb = await GovLookupRepository.GetAllLegislators();
             }
             else
             {
-                legislatorsFromDb = GetLegislatorsBySearchValue(searchValue);
+                legislatorsFromDb = await GetLegislatorsBySearchValue(searchValue);
             }
             return mapper.Map<IEnumerable<LegislatorSummaryDto>>(legislatorsFromDb);
 
         }
-        public LegislatorDetailDto GetLegislatorById(string id)
+        public async Task<LegislatorDetailDto> GetLegislatorById(string id)
         {
-            var legislatorFromDb = GovLookupRepository.GetLegislatorById(id);
-            AddLegislatorData(legislatorFromDb);
+            var legislatorFromDb = await GovLookupRepository.GetLegislatorById(id);
+            legislatorFromDb = await AddLegislatorData(legislatorFromDb);
             return mapper.Map<LegislatorDetailDto>(legislatorFromDb);
         }
 
 
         // serach value could be a name, address or zipcode.
-        public List<Legislator> GetLegislatorsBySearchValue(string searchValue)
+        public async Task<List<Legislator>> GetLegislatorsBySearchValue(string searchValue)
         {
 
             if (IsValidZip(ref searchValue))
             {
-                return GovLookupRepository.GetLegislatorsByZipcode(searchValue);
+                return await GovLookupRepository.GetLegislatorsByZipcode(searchValue);
             }
             else
             {
-                var legislatorsFromDb = GetLegislatorsByAddress(searchValue);
+                var legislatorsFromDb = await GetLegislatorsByAddress(searchValue);
 
                 if (legislatorsFromDb != null)
                 {
@@ -63,40 +64,41 @@ namespace GovLookup.Business.Implementation
                 }
                 else
                 {
-                    return GovLookupRepository.GetLegislatorsByName(searchValue);
+                    return await GovLookupRepository.GetLegislatorsByName(searchValue);
                 }
             }
 
         }
 
-        private void AddLegislatorData(Legislator legislator)
+        private async Task<Legislator> AddLegislatorData(Legislator legislator)
         {
-            if (legislator == null) return;
+            if (legislator == null) return legislator;
 
-            legislator.Ratings = GovLookupRepository.GetLegislatorRatings(legislator.Id);
-            legislator.KeyVotes = GovLookupRepository.GetLegislatorKeyVotes(legislator.Id);
-            legislator.Bills = GovLookupRepository.GetLegislatorBills(legislator.Id);
-            legislator.Committees = GovLookupRepository.GetLegislatorCommittees(legislator.Id);
-            legislator.IndustryFinance = GovLookupRepository.GetLegislatorIndustryFinance(legislator.Id);
-            legislator.IndustryFinanceChart = MapToPieChart(GovLookupRepository.GetLegislatorIndustryFinance(legislator.Id));
-            legislator.IndustryFinanceChartOptions = GetIndustryFinanceChartOptions();
-
+            legislator.Ratings = await GovLookupRepository.GetLegislatorRatings(legislator.Id);
+            legislator.KeyVotes = await GovLookupRepository.GetLegislatorKeyVotes(legislator.Id);
+            legislator.Bills = await GovLookupRepository.GetLegislatorBills(legislator.Id);
+            legislator.Committees = await GovLookupRepository.GetLegislatorCommittees(legislator.Id);
+            legislator.IndustryFinance =await  GovLookupRepository.GetLegislatorIndustryFinance(legislator.Id);
+            var industryFinanceData = await GovLookupRepository.GetLegislatorIndustryFinance(legislator.Id);
+            legislator.IndustryFinanceChart =  MapToPieChart(industryFinanceData);
+            legislator.IndustryFinanceChartOptions =  GetIndustryFinanceChartOptions();
+            return legislator;
 
         }
         #endregion
         #region legislatorAddress
 
-        public List<Legislator> GetLegislatorsByAddress(string searchValue)
+        public async Task<List<Legislator>> GetLegislatorsByAddress(string searchValue)
         {
 
-            AddressDetails ar = GetAddressDetails(searchValue);
+            AddressDetails ar = await GetAddressDetails(searchValue);
             if (ar != null)
             {
                 if (ar.result.addressMatches.Count == 0) return null;
                 AddressCorrdinates ac = GetAddressCoordinates(ar);
                 if (ac != null)
                 {
-                    return GovLookupRepository.GetLegislatorsByLngLat(ac.longitude, ac.latitude);
+                    return await GovLookupRepository.GetLegislatorsByLngLat(ac.longitude, ac.latitude);
                 }
             }
             return null;
@@ -104,7 +106,7 @@ namespace GovLookup.Business.Implementation
 
             
 
-        public AddressDetails GetAddressDetails(string searchValue)
+        public async Task<AddressDetails> GetAddressDetails(string searchValue)
         {
             using (var client = new HttpClient())
             {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using GovLookupWebapi.Models;
 using AutoMapper;
 using RefreshData.DataModel;
+using System.Threading.Tasks;
 
 namespace GovLookup.Business.Implementation
 {
@@ -14,11 +15,11 @@ namespace GovLookup.Business.Implementation
         public IGovLookupRepository GovLookupRepository { get; set; }
         public IMapper mapper { get; set; }
 
-        public IEnumerable<CurrentBillsDto> GetCurrentBills()
+        public async Task<IEnumerable<CurrentBillsDto>> GetCurrentBills()
         {
 
             List<CurrentBills> currentBillFromDb;
-            currentBillFromDb = GovLookupRepository.GetCurrentBills();
+            currentBillFromDb = await  GovLookupRepository.GetCurrentBills();
             return mapper.Map<IEnumerable<CurrentBillsDto>>(currentBillFromDb);
 
         }

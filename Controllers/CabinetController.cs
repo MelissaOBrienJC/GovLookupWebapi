@@ -5,6 +5,7 @@ using GovLookupWebapi.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace GovLookupWebApi.Controllers
 {
@@ -28,10 +29,10 @@ namespace GovLookupWebApi.Controllers
      
         [HttpGet()]
         [EnableCors("GovLookupPolicy")]
-        public IActionResult GetCabinet()
+        public async Task<IActionResult> GetCabinet()
         {
 
-            return Ok(this.cabinetService.GetCabinet());
+            return Ok(await this.cabinetService.GetCabinet());
             
         }
 
@@ -42,9 +43,9 @@ namespace GovLookupWebApi.Controllers
 
         [HttpGet("{cabinetId}")]
         [EnableCors("GovLookupPolicy")]
-        public IActionResult GetCabinet(string cabinetId)
+        public async Task<IActionResult> GetCabinet(string cabinetId)
         {
-            var cabinet = this.cabinetService.GetCabinetById(cabinetId);
+            var cabinet = await this.cabinetService.GetCabinetById(cabinetId);
 
             if (cabinet == null)
             {

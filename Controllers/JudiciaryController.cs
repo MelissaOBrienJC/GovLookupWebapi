@@ -5,6 +5,7 @@ using GovLookupWebapi.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace GovLookupWebApi.Controllers
 {
@@ -29,10 +30,10 @@ namespace GovLookupWebApi.Controllers
 
         [HttpGet()]
         [EnableCors("GovLookupPolicy")]
-        public IActionResult GetJudiciary()
+        public async Task<IActionResult> GetJudiciary()
         {
 
-            return Ok(this.judiciaryService.GetJudiciary());
+            return Ok(await this.judiciaryService.GetJudiciary());
             
         }
         /// <summary>
@@ -42,9 +43,9 @@ namespace GovLookupWebApi.Controllers
 
         [HttpGet("{judiciaryId}")]
         [EnableCors("GovLookupPolicy")]
-        public IActionResult GetJudiciary(string judiciaryId)
+        public async Task<IActionResult> GetJudiciary(string judiciaryId)
         {
-            var judiciary = this.judiciaryService.GetJudiciaryById(judiciaryId);
+            var judiciary = await this.judiciaryService.GetJudiciaryById(judiciaryId);
 
             if (judiciary == null)
             {
