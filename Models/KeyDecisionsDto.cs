@@ -18,6 +18,7 @@ namespace GovLookup.Models
         public string Outcome { get; set; }
         public string Tally { get; set; }
         public DateTime DecisionDate { get; set; }
+        public string VoteCast { get; set; }
         public IEnumerable<RollCallDecisionDto> RollCallDecision { get; set; }
 
     }
